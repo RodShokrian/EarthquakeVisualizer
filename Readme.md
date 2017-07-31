@@ -8,16 +8,16 @@ Each year, approximately 1,200 tornadoes hit the continental United States. The 
 
 With Tornado Tracker, users will be able to visualize tornado tracks along measures of:
 
-F-Scale
-Seasonality
-Property Damage
-Lethality
+-F-Scale
+-Seasonality
+-Property Damage
+-Lethality
 
 The core functionality of the app will include the following:
 
-A landing page with background knowledge and an explanation of the app's functionality
-An interactive data visualization displaying graphic information on historical tornado data rendered in the D3 js library
-A production readme
+-A landing page with background knowledge and an explanation of the app's functionality
+-An interactive data visualization displaying graphic information on historical tornado data rendered in the D3 js library
+-A production readme
 
 
 ### Architecture and Technologies
@@ -39,13 +39,24 @@ Import datasets from Data.gov and NOAA SPC.
 Familiarize self with D3 and refine scope of project based on functionality/limitations of the library.
 
 
-**Day 2**: Begin building charts. Have barebones skeletons of charts rendering the relevant data.
+**Day 2**:
+
+-Begin building charts.
+-Have barebones skeletons of charts rendering the relevant data.
+
+**Day 3**:
+
+-Continue building charts.
+-Add interactivity/ability to switch between datasets or timeframes.
+-Ensure a smooth user experience on a 'slippy' map.
+-Begin styling charts.
 
 
-**Day 3**: Continue building charts. Add interactivity/ability to switch between datasets or timeframes. Ensure a smooth user experience on a 'slippy' map. Begin styling charts.
+**Day 4**:
 
-
-**Day 4**: Style and polish the app. Potentially add a second color scheme. Add a landing page with background knowledge on the subject and a brief explanation of the app's functionality.
+-Style and polish the app.
+-Potentially add a second color scheme.
+-Add a landing page with background knowledge on the subject and a brief explanation of the app's functionality.
 
 ### Bonus Features
 
