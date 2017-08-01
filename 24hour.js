@@ -1,3 +1,6 @@
+import * as d3 from 'd3';
+const topojson = require("topojson");
+
 // Setup the svg element size and margins
 var margin = {top: 20, right: 20, bottom: 20, left: 20},
     width = 1200 - margin.left - margin.right,
@@ -13,7 +16,7 @@ var path = d3.geoPath()
     .projection(projection);
 
 // Create a variable to hold the main svg element
-var svg = d3.select("body").append("svg")
+var svg = d3.select(document.body).append("svg")
     .attr("width", width)
     .attr("height", height);
 

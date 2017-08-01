@@ -1,16 +1,21 @@
 {
-  "name": "TornadoWatch",
+  "name": "TornadoVisualizer",
   "version": "1.0.0",
   "description": "Each year, approximately 1,200 tornadoes hit the continental United States. The National Oceanic and Atmospheric Administration has maintained records on these events since the 1950s, but visualizing such large amounts of data in a clear and understandable way can be a challenge. To that end, I will implement an interactive data visualization using the D3.js library and data available through Data.gov and NOAA's Storm Prediction Center website (http://www.spc.noaa.gov/wcm/).",
   "main": "24hour.js",
   "dependencies": {
+    "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
+    "babel-preset-env": "^1.6.0",
     "babel-preset-es2015": "^6.24.1",
     "d3": "^4.10.0",
     "es2015": "0.0.0",
+    "html-webpack-plugin": "^2.30.1",
+    "jsdom": "^11.1.0",
     "topojson": "^3.0.0",
-    "webpack": "^3.4.1"
+    "webpack": "^3.4.1",
+    "webpack-dev-server": "^2.6.1"
   },
   "devDependencies": {
     "webpack": "^3.3.0",
@@ -18,7 +23,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "webpack"
+    "postinstall": "webpack",
+    "build": "babel src -d lib",
+		"start": "webpack-dev-server"
   },
   "repository": {
     "type": "git",
