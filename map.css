@@ -1,0 +1,38 @@
+body {
+    background: #bbb;
+}
+h1 {
+    text-align: center;
+    text-transform: uppercase;
+    color: #444;
+    font-family: sans-serif;
+    margin: 1em 0;
+    font-size: 2em;
+
+}
+svg {
+    margin: 0 auto;
+    display: block;
+    background: #bbb;
+}
+
+.sphere {
+    fill: #bbb;
+}
+
+.land {
+    fill: #666;
+}
+
+.boundry {
+    fill: none;
+    stroke: #bbb;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+}
+
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
