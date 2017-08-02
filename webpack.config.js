@@ -10,7 +10,10 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 
 module.exports = {
   context: __dirname,
-  entry: "./24hour.js",
+  entry: [
+		"./24hour.js",
+		"./map.css"
+		],
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: "bundle.js"

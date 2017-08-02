@@ -1,5 +1,5 @@
 body {
-    background: #bbb;
+    background: #358DF2;
 }
 h1 {
     text-align: center;
@@ -13,15 +13,15 @@ h1 {
 svg {
     margin: 0 auto;
     display: block;
-    background: #bbb;
+    background: #358DF2;
 }
 
 .sphere {
-    fill: #bbb;
+    fill: #358DF2;
 }
 
 .land {
-    fill: #666;
+    fill: #E9EF85;
 }
 
 .boundry {
