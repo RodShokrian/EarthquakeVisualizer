@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 const topojson = require("topojson");
 
+
 function createMap() {
 	// Setup the svg element size and margins
 	var margin = {top: 30, right: 30, bottom: 30, left: 30},
@@ -183,4 +184,17 @@ function createMap() {
 			})
 	})
 }
-createMap();
+
+function createNewMap() {
+	var chart = d3.selectAll('svg');
+	chart.remove();
+	createMap();
+}
+	
+var mapButton = document.getElementById('map');
+
+mapButton.addEventListener('click', createNewMap);
+
+var map2Button = document.getElementById('map2');
+
+map2Button.addEventListener('click', createMap);
