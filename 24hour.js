@@ -2,9 +2,9 @@ import * as d3 from 'd3';
 const topojson = require("topojson");
 
 
-function createMap() {
+function createMap(magnitude, timer, year, month, day) {
 	// Setup the svg element size and margins
-	var margin = {top: 30, right: 30, bottom: 30, left: 30},
+	var margin = {top: 20, right: 20, bottom: 20, left: 20},
 			width = 1200 - margin.left - margin.right,
 			height = 800 - margin.top - margin.bottom;
 
@@ -42,9 +42,9 @@ function createMap() {
 	d3.json('https://s3-us-west-2.amazonaws.com/s.cdpn.io/25240/world-110m.json', function(error, world) {
 			if(error) throw error;
 
-			// Setup time ago object
-			var dateObj = new Date();
-			dateObj.setDate(dateObj.getDate() - 30);
+			// Setup timeframe object
+			var currentDate = new Date();
+			var startDate = new Date(year, month, day);
 
 			// Append the World Map
 			var worldMap = g.append('path')
@@ -61,41 +61,65 @@ function createMap() {
 
 			// Create the x scale based on the domain of the time ago object and now
 			var x = d3.scaleTime()
-													.domain([dateObj, new Date()])
+													.domain([startDate, currentDate])
 													.range([0, width - margin.right - margin.left]);
 
 			// Append the xAxis on top
 			var xAxis = svg.append('g')
-																	 .attr('id', 'xAxis')
-																	 .attr('transform', 'translate(20, 20)')
-																	 .call(d3.axisTop(x));
+															 .attr('id', 'xAxis')
+															 .attr('transform', 'translate(20, 20)')
+															 .call(d3.axisTop(x));
+
+			//format dates for USGS api request
+			var startYear = startDate.getYear();
+			var startMonth = startDate.getMonth();
+			var startDay = startDate.getDate();
+			var currentYear = currentDate.getYear();
+			var currentMonth = currentDate.getMonth();
+			var currentDay = currentDate.getDate();
+			if (startMonth.toString().length < 2) {startMonth = "0" + (startMonth + 1)};
+			if (currentMonth.toString().length < 2) {currentMonth = "0" + currentMonth};
+			if (startDay.toString().length < 2) {startDay = "0" + startDay};
+			if (currentDay.toString().length < 2) {currentDay = "0" + currentDay};
+			if (startYear.toString().length === 3) {startYear = "20" + startYear.toString().slice(1)};
+			if (currentYear.toString().length === 3) {currentYear = "20" + currentYear.toString().slice(1)};
+			if (startYear.toString().length === 2) {startYear = "19" + startYear};
+			if (currentYear.toString().length === 2) {currentYear = "19" + currentYear};
+			var startDateString = `${startYear}-${startMonth}-${startDay}`;
+			var currentDateString = `${currentYear}-${currentMonth}-${currentDay}`;
+			console.log(startDateString);
+			console.log(startDate);
+			console.log(startDate.getDate());
+			console.log(startDate.getMonth());
+			console.log(startDate.getYear());
 
 			// Import earthquake data from USGS
-			d3.json('https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2014-01-01&endtime=2014-02-02&minmagnitude=5', function(error, data) {
+
+			d3.json(`https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=${startDateString}&endtime=${currentDateString}&minmagnitude=${magnitude}`, function(error, data) {
 					if(error) throw error;
 					var quake = data.features.reverse();
-					// https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_month.geojson
 					// Create a group with the quake id to hold the quake circle and pulse circle
 					var earthquakeGroups = gQuakes.selectAll('g')
 						 .data(quake)
 						 .enter().append('g')
 						 .attr('id', function(d) {
-									 return d.id;
+							 return d.id;
 						 })
 						 .attr('class', 'quake-group');
 
+				console.log(timer);
 					//Create the pulse-circle circles for the earthquake pulse
 					gQuakes.selectAll('.quake-group')
-						 .append('circle')
-						 .attr('class', 'circle pulse-circle')
-						 .attr('cx', function(d) {
-									 return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+						.append('circle')
+						.attr('class', 'circle pulse-circle')
+						.attr('cx', function(d) {
+						 return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
 						 })
 						 .attr('cy', function(d) {
-									 return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+							 return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
 						 })
-							 .attr('r', function(d) {
-									 return 0;
+						 .attr('r', function(d) {
+							 return 0;
 						 })
 						 .attr('fill', '#ff0000');
 
@@ -103,10 +127,10 @@ function createMap() {
 					gQuakes.selectAll('.quake-group')
 						.append('circle')
 							.attr('cx', function(d) {
-									 return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+							 return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
 						 })
 						.attr('cy', function(d) {
-									 return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+							 return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
 						 })
 						.attr('r', 0 )
 						.attr('class', 'circle quake-circle')
@@ -118,21 +142,20 @@ function createMap() {
 						});
 
 
-					// Function that calculates the difference between the earthquake and time ago and
-					// creates a delay property.
+					// Function that calculates the difference between the time of the earthquake and
+					// the beginning of the chart's time range
 					var setQuakeDelay = function() {
-							for(var i = 0, max = quake.length; i < max; i++){
-									var timeDiff = quake[i].properties.time - dateObj;
-									var timeDiffObj = new Date(timeDiff);
-									quake[i].delay = Date.parse(timeDiffObj) / 50000; 
+							for(var i = 0; i < quake.length; i++){
+									var timeDifference = quake[i].properties.time - startDate.getTime();
+									var timeDifferenceObj = new Date(timeDifference);
+									//Ensure that animation will run ~30 seconds from start to
+									//finish
+									quake[i].delay = timeDifferenceObj.getTime() / timer; 
 							}
 					}
 					setQuakeDelay();
-
-					// Grab the longest delay for the xAxis marker
 					var longestDelay = quake[quake.length - 1].delay;
-
-					// Changes the radius of the earthquakes to their magnitue using a transition
+					// Changes the radius of the earthquakes to their magnitude using a transition
 					// and the delay created from the setQuakeDelay function
 					var quakeCircles = svg.selectAll('.quake-circle')
 							 .data(quake)
@@ -160,17 +183,15 @@ function createMap() {
 							 .duration(2000)
 							 .attr('r', function(d) {
 								 if(d.properties.mag < 0) {
-											 return 0.1 * 8;
-									 } else {
-											 return d.properties.mag * 8;
-									 }
+									 return 0.1 * 8;
+								 } else {
+									 return d.properties.mag * 8;
+								 }
 							 })
 							 .style('opacity', 0)
-						 .remove()
+							 .remove()
 
 					// Add the time marker that moves across the xAxis while the animation it playing.
-					// It's not perfectly in sync, but it's close enough for this example. The length of
-					// the animation is equal to the longest delay that we calculated earlier.
 					var timeline = xAxis.append('circle')
 							 .attr('class', 'transition-circle')
 							 .attr('cx', 0)
@@ -178,23 +199,32 @@ function createMap() {
 							 .attr('r', 3)
 							 .style('fill', 'red')
 							 .transition()
-								 .ease(d3.easeLinear)
+							 .ease(d3.easeLinear)
 							 .duration(longestDelay + 1000)
 							 .attr('cx', 1120)
 			})
 	})
 }
 
-function createNewMap() {
+// Remove any maps that may have been previously created and make a new
+// one with the given params
+// Arguments accepted: magnitude (float), year (int), month (int), day
+// (int)
+function createNewMap(magnitude, timer, year, month, day) {
 	var chart = d3.selectAll('svg');
 	chart.remove();
-	createMap();
+	createMap(magnitude, timer, year, month - 1, day);
 }
-	
+
+// Create map-making buttons and event listeners	
 var mapButton = document.getElementById('map');
 
-mapButton.addEventListener('click', createNewMap);
+mapButton.addEventListener('click', function() {createNewMap(6.0, 1000000, 2017, 1, 1)});
 
 var map2Button = document.getElementById('map2');
 
-map2Button.addEventListener('click', createMap);
+map2Button.addEventListener('click', function() {createNewMap(4.5, 100000, 2017, 6, 1)});
+
+var map3Button = document.getElementById('map3');
+
+map3Button.addEventListener('click', function() {createNewMap(4.0, 4000, 2017, 7, 1)});
