@@ -3,15 +3,15 @@ var webpack = require('webpack');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: './24hour.html',
-  filename: '24hour.html',
+  template: './main.html',
+  filename: 'main.html',
   inject: 'body'
 })
 
 module.exports = {
   context: __dirname,
   entry: [
-		"./24hour.js",
+		"./main.js",
 		"./map.css"
 		],
   output: {

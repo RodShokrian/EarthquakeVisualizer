@@ -36,3 +36,17 @@ svg {
     fill: none;
     pointer-events: all;
 }
+
+.button {
+		background-color: grey; 
+    border: none;
+    color: white;
+    padding: 20px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+		margin-top: 10px;
+		margin-bottom: 20px;
+		margin-left: 20px;
+}
