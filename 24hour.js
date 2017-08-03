@@ -87,11 +87,6 @@ function createMap(magnitude, timer, year, month, day) {
 			if (currentYear.toString().length === 2) {currentYear = "19" + currentYear};
 			var startDateString = `${startYear}-${startMonth}-${startDay}`;
 			var currentDateString = `${currentYear}-${currentMonth}-${currentDay}`;
-			console.log(startDateString);
-			console.log(startDate);
-			console.log(startDate.getDate());
-			console.log(startDate.getMonth());
-			console.log(startDate.getYear());
 
 			// Import earthquake data from USGS
 
@@ -107,7 +102,6 @@ function createMap(magnitude, timer, year, month, day) {
 						 })
 						 .attr('class', 'quake-group');
 
-				console.log(timer);
 					//Create the pulse-circle circles for the earthquake pulse
 					gQuakes.selectAll('.quake-group')
 						.append('circle')
