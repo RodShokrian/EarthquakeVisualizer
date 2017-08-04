@@ -17,15 +17,6 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
     filename: "bundle.js"
   },
-  module: {
-    loaders: [
-      {
-        test: [/\.jsx?$/, /\.js?$/],
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-      }
-    ]
-  },
   devtool: 'source-maps',
 	plugins: [HtmlWebpackPluginConfig]
 };
