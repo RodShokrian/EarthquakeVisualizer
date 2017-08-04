@@ -81,7 +81,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 const topojson = __webpack_require__(3);
 
-// this is a change
 
 function createMap(magnitude, timer, year, month, day) {
 	// Setup the svg element size and margins
@@ -117,9 +116,9 @@ function createMap(magnitude, timer, year, month, day) {
 	var gQuakes = svg.append('g').attr('id', 'all-quakes');
 
 	// Import the geoJSON file for the world map
-	__WEBPACK_IMPORTED_MODULE_0_d3__["json"]('https://s3-us-west-2.amazonaws.com/s.cdpn.io/25240/world-110m.json', function(error, world) {
+	__WEBPACK_IMPORTED_MODULE_0_d3__["json"]('./map.json', function(error, world) {
 			if(error) throw error;
-
+//https://s3-us-west-2.amazonaws.com/s.cdpn.io/25240/world-110m.json
 			// Setup timeframe object
 			var currentDate = new Date();
 			var startDate = new Date(year, month, day);
@@ -291,6 +290,7 @@ function createNewMap(magnitude, timer, year, month, day) {
 }
 
 // Create map-making buttons and event listeners	
+document.addEventListener('DOMContentLoaded', () => { 
 var mapButton = document.getElementById('map');
 
 mapButton.addEventListener('click', function() {createNewMap(6.0, 1000000, 2017, 1, 1)});
@@ -302,6 +302,7 @@ map2Button.addEventListener('click', function() {createNewMap(4.5, 100000, 2017,
 var map3Button = document.getElementById('map3');
 
 map3Button.addEventListener('click', function() {createNewMap(4.0, 4000, 2017, 7, 1)});
+});
 
 
 /***/ }),
