@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 const topojson = require("topojson");
 
+// this is a change
 
 function createMap(magnitude, timer, year, month, day) {
 	// Setup the svg element size and margins
