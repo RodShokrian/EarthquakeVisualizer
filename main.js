@@ -17,23 +17,20 @@ function createMap(magnitude, timer, year, month, day) {
 	var path = d3.geoPath().projection(projection);
 
 	// Create a variable to hold the main svg element
-	var svg = d3.select(document.body).append("svg")
-			.attr("width", width)
-			.attr("height", height);
+	var svg = d3.select(document.body).append("svg").attr("width", width).attr("height", height);
 
 	// Group to hold the maps and borders
-	var g = svg.append('g')
-						 .attr('id', 'world-map');
+	var g = svg.append('g').attr('id', 'world-map');
 
 	// Add a clip path element to the world map group
 	// for the x axis
 	g.append('clipPath')
-	 .attr('id', 'clip-path')
-	 .append('rect')
-	 .attr('x', 0)
-	 .attr('y', 30)
-	 .attr('width', width)
-	 .attr('height', height - 30)
+		.attr('id', 'clip-path')
+		.append('rect')
+		.attr('x', 0)
+		.attr('y', 30)
+	  .attr('width', width)
+	  .attr('height', height - 30)
 
 	// Group to hold all of the earthquake elements
 	var gQuakes = svg.append('g').attr('id', 'all-quakes');
@@ -48,16 +45,18 @@ function createMap(magnitude, timer, year, month, day) {
 
 			// Append the World Map
 			var worldMap = g.append('path')
-			 .attr('clip-path', 'url(#clip-path)') // attaches the clip path to not draw the map underneath the x axis
-			 .datum(topojson.merge(world, world.objects.countries.geometries)) // draws a single land object for the entire map
-			 .attr('class', 'land')
-			 .attr('d', path)
+				// attaches the clip path to not draw the map underneath the x axis
+			  .attr('clip-path', 'url(#clip-path)') 
+				// draws a single land object for the entire map
+			  .datum(topojson.merge(world, world.objects.countries.geometries)) 
+			  .attr('class', 'land')
+			  .attr('d', path)
 
 			// Append the World Map Country Borders
 			g.append('path')
-			 .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
-			 .attr('class', 'boundry')
-			 .attr('d', path);
+				.datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+			  .attr('class', 'boundry')
+			  .attr('d', path);
 
 			// Create the x scale based on the domain of the time ago object and now
 			var x = d3.scaleTime()
@@ -66,9 +65,9 @@ function createMap(magnitude, timer, year, month, day) {
 
 			// Append the xAxis on top
 			var xAxis = svg.append('g')
-															 .attr('id', 'xAxis')
-															 .attr('transform', 'translate(20, 20)')
-															 .call(d3.axisTop(x));
+															  .attr('id', 'xAxis')
+															  .attr('transform', 'translate(20, 20)')
+															  .call(d3.axisTop(x));
 
 			//format dates for USGS api request
 			var startYear = startDate.getYear();

@@ -3,16 +3,15 @@ var webpack = require('webpack');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: './main.html',
-  filename: 'main.html',
+  template: './index.html',
+  filename: 'index.html',
   inject: 'body'
 })
 
 module.exports = {
   context: __dirname,
   entry: [
-		"./main.js",
-		"./map.css"
+		"./main.js"
 		],
   output: {
     path: path.resolve(__dirname, 'build'),
